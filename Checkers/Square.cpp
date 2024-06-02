@@ -1,22 +1,9 @@
 #include "Square.h"
-#include <sstream>
-#include <string>
-void Square::draw() {
-    
-    
+void Square::draw() const {
     if (selected) 
-    {
-        DrawRectangle((location.x * width), (location.y * width), width, width, YELLOW);
-    }
+        DrawRectangle((location.x * width), (location.y * width), width, width, SKYBLUE);
     else 
-    {
         DrawRectangle((location.x * width), (location.y * width), width, width, color);
-    }
-
-    std::stringstream ss;
-    ss << location.x << ", " << location.y;
-    std::string str = ss.str();
-    DrawText(str.c_str(),  location.x * width + width / 2 - 10,  location.y * width + width / 2 - 7, 15, this->piece == nullptr ? GREEN : BLUE);
 }
 
 void Square::setPiece(Piece* piece)

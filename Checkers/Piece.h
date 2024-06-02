@@ -12,9 +12,9 @@ public:
 	void draw(int offset);
 	void promote();
 	void demote();
-	bool isWhite() { return white; }
+	bool isWhite() const { return white; }
 	IVector2 getPositionAsVector(int);
-	bool isKing() { return king; }
+	bool isKing() const { return king; }
 
 	Piece(IVector2, int, Color, bool);
 	~Piece() = default;
@@ -25,5 +25,7 @@ private:
 	int radius;
 	bool king;
 	bool white;
+	static int whiteScore;
+	static int blackScore;
 };
 

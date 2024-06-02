@@ -7,9 +7,9 @@ public:
     Square() : location{ 0, 0 }, width(0), piece(nullptr), color(RED) { selected = false; }
     ~Square() = default;
 
-    bool isSelected() { return selected; }
+    bool isSelected() const { return selected; }
     void highlight(bool value) { selected = value; }
-    void draw();
+    void draw() const;
     void setPiece(Piece* piece);
     Piece* getPiece() const { return piece; }
     int getWidth() const { return width; }

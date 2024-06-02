@@ -3,14 +3,17 @@
 #include "Utils.h"
 #include <stack>
 #include <iostream>
+#include <string>
 
 typedef struct Move
 {
 	IVector2 from;
 	IVector2 to;
+	Piece* piece;
 	Piece* capturedPiece;
 	Square* capturedSquare;
 	bool promoteFlag;
+	bool multiCapture;
 
 	bool operator==(const Move& other) const
 	{
@@ -28,15 +31,17 @@ public:
 	~Game() = default;
 
 	void draw();
+	void update();
 	Board* getBoard();
-	std::vector<Move> getLegalMoves();
+	std::vector<Move> getLegalMoves(std::vector<Piece*>, bool);
 	void movePiece(Square*, Square*);
 	Square* findSquareContainingPiece(Piece*);
 	void handleInput();
 	void makeMove(Move);
 	void undoMove();
 	bool isWhitesTurn();
-	bool isGameOver() { return gameOver; }
+	bool isGameOver() const { return gameOver; }
+	bool didWhiteWin() const { return !whitePlayerTurn; }
 
 private:
 	Board board;
@@ -48,7 +53,9 @@ private:
 	bool isDragging;
 	bool whitePlayerTurn;
 	bool gameOver;
+	bool isPlaying;
 	bool isPlayerPiece(Piece*);
 	void highlightLegalMoves();
 	void unhighlightSquares();
+	void checkIfGameOver();
 };

@@ -20,6 +20,14 @@ typedef struct IVector4
 	int w;
 } IVector4;
 
-class Utils
+enum GameResult
 {
+	WhiteWins,
+	BlackWins,
+	Draw,
+	WhiteTimeout,
+	BlackTimeout,
+	DrawByArbiter,
+	WhiteIllegalMove,
+	BlackIllegalMove
 };
