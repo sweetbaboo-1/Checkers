@@ -5,27 +5,18 @@
 class Piece
 {
 public:
-	IVector2 getPosition();
-	void move(IVector2);
-	Color getColor();
-
-	void draw(int offset);
-	void promote();
-	void demote();
-	bool isWhite() const { return white; }
-	IVector2 getPositionAsVector(int);
-	bool isKing() const { return king; }
-
-	Piece(IVector2, int, Color, bool);
+	Piece(bool isWhite);
 	~Piece() = default;
 
+	void draw(IVector2 position, float radius, Color color) const;
+	void setKing(bool king);
+	void setBeingDragged(bool isBeingDragged);
+	bool isWhite() const { return white; }
+	bool isKing() const { return king; }
+
 private:
-	IVector2 position;
-	Color color;
-	int radius;
 	bool king;
 	bool white;
-	static int whiteScore;
-	static int blackScore;
+	bool isBeingDragged;
 };
 

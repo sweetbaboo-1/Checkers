@@ -2,23 +2,20 @@
 #include "Piece.h"
 
 class Square {
+
 public:
-    Square(IVector3 v3, Piece* piece, Color color) : location{ v3.x, v3.y }, width(static_cast<int>(v3.z)), piece(piece), color(color) { selected = false; }
-    Square() : location{ 0, 0 }, width(0), piece(nullptr), color(RED) { selected = false; }
+    Square();
+    Square(Piece* piece, Color color);
     ~Square() = default;
 
-    bool isSelected() const { return selected; }
-    void highlight(bool value) { selected = value; }
-    void draw() const;
+    bool isHighlighted() const;
+    void setHighlight(bool highlighted);
+    void draw(IVector2 position, int width) const;
     void setPiece(Piece* piece);
-    Piece* getPiece() const { return piece; }
-    int getWidth() const { return width; }
-    IVector2 getLocation() const { return location; }
+    Piece* getPiece();
 
 private:
-    IVector2 location;
-    int width;
     Piece* piece; 
     Color color;
-    bool selected;
+    bool highlighted;
 };

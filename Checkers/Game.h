@@ -27,19 +27,18 @@ typedef struct Move
 class Game
 {
 public:
-	Game(int);
+	Game(int squareWidth);
 	~Game() = default;
 
 	void draw();
 	void update();
 	Board* getBoard();
-	std::vector<Move> getLegalMoves(std::vector<Piece*>, bool);
-	void movePiece(Square*, Square*);
-	Square* findSquareContainingPiece(Piece*);
+	std::vector<Move> getLegalMoves(std::vector<Piece*> pieces, bool forceReturnCaptureMoves);
+	void movePiece(Square* from, Square* to);
 	void handleInput();
-	void makeMove(Move);
+	void makeMove(Move move);
 	void undoMove();
-	bool isWhitesTurn();
+	bool isWhitesTurn() const;
 	bool isGameOver() const { return gameOver; }
 	bool didWhiteWin() const { return !whitePlayerTurn; }
 
@@ -54,8 +53,9 @@ private:
 	bool whitePlayerTurn;
 	bool gameOver;
 	bool isPlaying;
-	bool isPlayerPiece(Piece*);
+	bool isPlayerPiece(Piece*) const;
 	void highlightLegalMoves();
 	void unhighlightSquares();
 	void checkIfGameOver();
+	void generatePieces();
 };

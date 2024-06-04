@@ -1,46 +1,34 @@
 #include "Piece.h"
 
-Color Piece::getColor() 
+Piece::Piece(bool isWhite)
 {
-	return this->color;
+	white = isWhite;
+	king = false;
+	isBeingDragged = false;
 }
 
-IVector2 Piece::getPosition() 
+void Piece::draw(IVector2 position, float radius, Color color) const {
+    if (king)
+    {
+        DrawCircle(position.x, position.y, radius, GOLD);
+    }
+    if (isBeingDragged)
+    {
+        Color c = Color{ color.r, color.b, color.g, static_cast<unsigned char>(color.a / 2) };
+        DrawCircle(position.x, position.y, king ? radius * 0.9 : radius, c);
+    }
+    else
+    {
+        DrawCircle(position.x, position.y, king ? radius * 0.9 : radius, color);
+    }
+}
+
+void Piece::setKing(bool king)
 {
-	return this->position;
+	this->king = king;
 }
 
-void Piece::draw(int offset) {
-	offset = offset / 2;
-	DrawCircle( this->getPosition().x + offset,  this->getPosition().y + offset, radius * 0.8, this->getColor());
-	if (king)
-		DrawText("K", this->getPosition().x + offset - radius / 4, this->getPosition().y - radius / 3 + offset, radius * 0.8, GOLD);
-}
-
-void Piece::move(IVector2 newPos) {
-	this->position = newPos;
-}
-
-
-void Piece::promote() 
+void Piece::setBeingDragged(bool isBeingDragged)
 {
-	this->king = true;
-}
-
-void Piece::demote()
-{
-	this->king = false;
-}
-
-IVector2 Piece::getPositionAsVector(int width)
-{
-	return IVector2 { position.x / width, position.y / width };
-}
-
-Piece::Piece(IVector2 position, int radius, Color color, bool isWhite) {
-	this->position = position;
-	this->color = color;
-	this->radius = radius;
-	this->king = false;
-	this->white = isWhite;
+	this->isBeingDragged = isBeingDragged;
 }

@@ -1,6 +1,14 @@
 #include "Game.h"
 
-Game::Game(int width) : board(width), squareWidth(width), isDragging(false), selectedPiece(nullptr), selectedSquare(nullptr), whitePlayerTurn(true), gameOver(false) {}
+
+Game::Game(int squareWidth)
+{
+	this->squareWidth = squareWidth;
+	board = Board(squareWidth);
+	generatePieces();
+	isPlaying = true;
+	whitePlayerTurn = true;
+}
 
 void Game::draw()
 {
@@ -17,8 +25,7 @@ void Game::update()
 			return;
 		}
 
-		// random AI
-
+		// AI that makes random legal moves
 		srand(time(NULL));
 		std::vector<Move> legalMoves = getLegalMoves(board.getPieces(), false);
 		if (legalMoves.size() == 0)
@@ -29,34 +36,6 @@ void Game::update()
 		Move move = legalMoves[rand() % legalMoves.size()];
 		makeMove(move);
 		return;
-	}	
-	std::string winner = didWhiteWin() ? "White" : "Black";
-	std::string text = "Game Over! " + winner + " wins!";
-	DrawText(text.c_str(), GetScreenWidth() / 2 - MeasureText(text.c_str(), 40) / 2, GetScreenHeight() / 2 - 20, 40, BLACK);
-
-	// wait 1 sec, increment the winner's score, and reset the game once someone has won 50x, don't reset the game anymore and instead print the stats
-	static int whiteWins = 0;
-	static int blackWins = 0;
-	static float timer = 0;
-	timer += GetFrameTime();
-	if (timer >= 0)
-	{
-		timer = 0;
-		if (didWhiteWin())
-			whiteWins++;
-		else
-			blackWins++;
-		if (whiteWins >= 50 || blackWins >= 50)
-		{
-			std::string stats = "White wins: " + std::to_string(whiteWins) + "\nBlack wins: " + std::to_string(blackWins);
-			DrawText(stats.c_str(), GetScreenWidth() / 2 - MeasureText(stats.c_str(), 20) / 2, GetScreenHeight() / 2 + 20, 20, BLACK);
-		}
-		else
-		{
-			whitePlayerTurn = true;
-			gameOver = false;
-			board = Board(squareWidth);
-		}
 	}
 }
 
@@ -80,17 +59,16 @@ std::vector<Move> Game::getLegalMoves(std::vector<Piece*> pieces, bool forceRetu
 
 	for (auto& piece : pieces)
 	{
-		if (piece == nullptr)
-			continue; // idk how this happens but when both sides are randomly making moves it can happen
+		//if (piece == nullptr)
+			//continue; // idk how this happens but when both sides are randomly making moves it can happen
 
 		if (piece->isWhite() != isWhitesTurn())
 			continue;
 
-		IVector2 piecePos;
-		if (piece == selectedPiece)
-			piecePos = selectedSquare->getLocation();
-		else
-			piecePos = piece->getPositionAsVector(squareWidth);
+		IVector2 piecePos = board.getPieceLocaiton(piece);
+
+		if (piecePos.x == -1 || piecePos.y == -1)
+			continue;
 
 		const IVector2* directions = piece->isKing() ? kingDirections : (piece->isWhite() ? whiteDirections : blackDirections);
 		int possibleDirections = piece->isKing() ? 4 : 2;
@@ -131,9 +109,13 @@ void Game::highlightLegalMoves()
 {
 	for (auto& move : getLegalMoves(board.getPieces()))
 	{
-		if (selectedSquare->getLocation().x == move.from.x && selectedSquare->getLocation().y == move.from.y)
+		IVector2 squareLocation = board.getSquareLocation(selectedSquare);
+		if (squareLocation.x == -1 || squareLocation.y == -1)
+			continue;
+		
+		if (squareLocation.x == move.from.x && squareLocation.y == move.from.y)
 		{
-			board.getSquareAt(move.to.x, move.to.y)->highlight(true);
+			board.getSquareAt(move.to.x, move.to.y)->setHighlight(true);
 		}
 	}
 }
@@ -144,7 +126,7 @@ void Game::unhighlightSquares()
 	{
 		for (int col = 0; col < 8; col++)
 		{
-			board.getSquares()[row][col].highlight(false);
+			board.getSquares()[row][col].setHighlight(false);
 		}
 	}
 }
@@ -167,26 +149,32 @@ void Game::checkIfGameOver()
 	}
 }
 
+void Game::generatePieces()
+{
+	for (int row = 0; row < 8; row++) {
+		for (int col = 0; col < 3; col++) {
+			if ((col + row) % 2 == 0) {
+				Piece* newPiece = new Piece(false);
+				board.getSquares()[row][col].setPiece(newPiece);
+			}
+		}
+	}
+
+	for (int row = 0; row < 8; row++) {
+		for (int col = 5; col < 8; col++) {
+			if ((col + row) % 2 == 0) {
+				Piece* newPiece = new Piece(true);
+				board.getSquares()[row][col].setPiece(newPiece);
+			}
+		}
+	}
+}
+
 void Game::movePiece(Square* from, Square* to)
 {
 	Piece* piece = from->getPiece();
 	to->setPiece(piece);
 	from->setPiece(nullptr);
-
-	std::cerr << "Moved piece from (" << from->getLocation().x << ", " << from->getLocation().y << ") to (" << to->getLocation().x << ", " << to->getLocation().y << ")\n";
-}
-
-Square* Game::findSquareContainingPiece(Piece* piece)
-{
-	for (int row = 0; row < 8; ++row) {
-		for (int col = 0; col < 8; ++col) {
-			Square& square = board.getSquares()[row][col];
-			if (square.getPiece() == piece) {
-				return &square;
-			}
-		}
-	}
-	return nullptr;
 }
 
 void Game::makeMove(Move move)
@@ -198,7 +186,6 @@ void Game::makeMove(Move move)
 			if (legalMove.capturedPiece != nullptr)
 			{
 				legalMove.capturedSquare->setPiece(nullptr);
-				std::cerr << "Captured piece at (" << legalMove.capturedSquare->getLocation().x << ", " << legalMove.capturedSquare->getLocation().y << ")\n";
 			}
 			Piece* piece = board.getSquareAt(legalMove.from.x, legalMove.from.y)->getPiece();
 			movePiece(board.getSquareAt(move.from.x, move.from.y), board.getSquareAt(move.to.x, move.to.y));
@@ -206,7 +193,7 @@ void Game::makeMove(Move move)
 			// check if we need to promote
 			if (!piece->isKing() && (move.to.y == 0 || move.to.y == 7))
 			{
-				piece->promote();
+				piece->setKing(true);
 				legalMove.promoteFlag = true;
 			}
 
@@ -231,7 +218,6 @@ void Game::makeMove(Move move)
 			return;
 		}
 	}
-	selectedPiece->move(IVector2{ selectedSquare->getLocation().x * selectedSquare->getWidth(), selectedSquare->getLocation().y * selectedSquare->getWidth() });
 }
 
 void Game::undoMove()
@@ -250,16 +236,14 @@ void Game::undoMove()
 
 	if (lastMove.promoteFlag)
 	{
-		board.getSquareAt(lastMove.from.x, lastMove.from.y)->getPiece()->demote();
+		board.getSquareAt(lastMove.from.x, lastMove.from.y)->getPiece()->setKing(false);
 	}
 
 	if (!lastMove.multiCapture)
 		whitePlayerTurn = !whitePlayerTurn;
-
-	std::cerr << "Undid move from (" << lastMove.to.x << ", " << lastMove.to.y << ") to (" << lastMove.from.x << ", " << lastMove.from.y << ")\n";
 }
 
-bool Game::isWhitesTurn()
+bool Game::isWhitesTurn() const
 {
 	return whitePlayerTurn;
 }
@@ -271,7 +255,7 @@ Square* Game::getSquareUnderMouse(Vector2 mousePos)
 	return board.getSquareAt(x, y);
 }
 
-bool Game::isPlayerPiece(Piece* piece)
+bool Game::isPlayerPiece(Piece* piece) const
 {
 	return piece->isWhite() == isWhitesTurn();
 }
@@ -290,17 +274,22 @@ void Game::handleInput()
 	{
 		Square* squareUnderMouse = getSquareUnderMouse(mousePos);
 
-		if (squareUnderMouse->getPiece() == nullptr)
-		{
-			return;
-		}
-
 		selectedSquare = squareUnderMouse;
 		if (selectedSquare->getPiece() != nullptr)
 		{
+			if (selectedSquare->getPiece()->isWhite() != isWhitesTurn())
+			{
+				selectedSquare = nullptr;
+				return;
+			}
 			selectedPiece = selectedSquare->getPiece();
 			isDragging = true;
+			selectedPiece->setBeingDragged(true);
 			highlightLegalMoves();
+		}
+		else
+		{
+			return;
 		}
 	}
 
@@ -309,16 +298,28 @@ void Game::handleInput()
 		if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
 		{
 			isDragging = false;
+			selectedPiece->setBeingDragged(false);
 			unhighlightSquares();
 			Square* endSquare = getSquareUnderMouse(mousePos);
-			makeMove(Move{ selectedSquare->getLocation(), endSquare->getLocation() });
+
+			IVector2 fromSquareLocation = board.getSquareLocation(selectedSquare);
+			if (fromSquareLocation.x == -1 || fromSquareLocation.y == -1)
+				return;
+
+			IVector2 toSquareLocation = board.getSquareLocation(endSquare);
+			if (toSquareLocation.x == -1 || toSquareLocation.y == -1)
+				return;
+
+			makeMove(Move{ fromSquareLocation, toSquareLocation });
 			selectedPiece = nullptr;
-			selectedSquare->highlight(false);
+			selectedSquare->setHighlight(false);
 			selectedSquare = nullptr;
 		}
 		else
 		{
-			selectedPiece->move(IVector2{ (int)mousePos.x - squareWidth / 2, (int)mousePos.y - squareWidth / 2 });
+			selectedPiece->setBeingDragged(false);
+			selectedPiece->draw(IVector2{ (int)mousePos.x, (int)mousePos.y}, squareWidth * 0.4, selectedPiece->isWhite() ? WHITE : BLACK);
+			selectedPiece->setBeingDragged(true);
 		}
 	}
 }
