@@ -7,17 +7,21 @@
 class Board
 {
 public:
-	Board(int);
+	Board(); // added due to issue in game constructor
+	Board(int squareWidth);
 	~Board() = default;
-	Square* getSquareAt(int row, int col);
+
 	void draw();
+	Square* getSquareAt(int row, int col);
 	Square(*getSquares())[8] { return &squares[0]; }
+	IVector2 getSquareLocation(Square* square);
+	IVector2 getPieceLocaiton(Piece* piece);
 	std::vector<Piece*> getPieces();
 
 private:
 	Square squares[8][8];
-	void generatePieces();
+	std::vector<Square*> highlightedSquares;
 	void generateSquares();
-	int width;
+	int squareWidth;
 };
 
