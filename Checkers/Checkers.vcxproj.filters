@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\bots">
+      <UniqueIdentifier>{500e373d-42f9-4e35-9a67-c9b92f54232a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\bots">
+      <UniqueIdentifier>{d22c12c1-0fb4-4e24-9988-e639358b7a98}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Checkers.cpp">
@@ -28,6 +34,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Square.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomBot.cpp">
+      <Filter>Source Files\bots</Filter>
+    </ClCompile>
+    <ClCompile Include="SmartBot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -46,6 +58,15 @@
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IBot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomBot.h">
+      <Filter>Header Files\bots</Filter>
+    </ClInclude>
+    <ClInclude Include="SmartBot.h">
+      <Filter>Header Files\bots</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

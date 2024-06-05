@@ -8,7 +8,7 @@ public:
 	Piece(bool isWhite);
 	~Piece() = default;
 
-	void draw(IVector2 position, float radius, Color color) const;
+	void draw(Vector2Int position, float radius, Color color) const;
 	void setKing(bool king);
 	void setBeingDragged(bool isBeingDragged);
 	bool isWhite() const { return white; }

@@ -10,7 +10,7 @@ public:
 
     bool isHighlighted() const;
     void setHighlight(bool highlighted);
-    void draw(IVector2 position, int width) const;
+    void draw(Vector2Int position, int width) const;
     void setPiece(Piece* piece);
     Piece* getPiece();
 

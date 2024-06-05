@@ -1,24 +1,17 @@
 #pragma once
-typedef struct IVector2
+
+typedef struct Vector2Int
 {
 	int x;
 	int y;
-} IVector2;
+} Vector2Int;
 
-typedef struct IVector3
+typedef struct Vector3Int
 {
 	int x;
 	int y;
 	int z;
-} IVector3;
-
-typedef struct IVector4
-{
-	int x;
-	int y;
-	int z;
-	int w;
-} IVector4;
+} Vector3Int;
 
 enum GameResult
 {

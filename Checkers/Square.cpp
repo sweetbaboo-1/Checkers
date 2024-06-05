@@ -13,7 +13,7 @@ Square::Square(Piece* piece, Color color)
 	highlighted = false;
 }
 
-void Square::draw(IVector2 position, int width) const
+void Square::draw(Vector2Int position, int width) const
 {
 	DrawRectangle(position.x, position.y, width, width, highlighted ? SKYBLUE : color);
 }

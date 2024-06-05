@@ -1,14 +1,15 @@
 #pragma once
 #include "Board.h"
 #include "Utils.h"
+#include "IBot.h"
 #include <stack>
-#include <iostream>
-#include <string>
+
+class IBot;
 
 typedef struct Move
 {
-	IVector2 from;
-	IVector2 to;
+	Vector2Int from;
+	Vector2Int to;
 	Piece* piece;
 	Piece* capturedPiece;
 	Square* capturedSquare;
@@ -27,35 +28,36 @@ typedef struct Move
 class Game
 {
 public:
-	Game(int squareWidth);
+	Game(int squareWidth, IBot* bot);
 	~Game() = default;
 
 	void draw();
 	void update();
 	Board* getBoard();
 	std::vector<Move> getLegalMoves(std::vector<Piece*> pieces, bool forceReturnCaptureMoves);
-	void movePiece(Square* from, Square* to);
-	void handleInput();
-	void makeMove(Move move);
+	void handlePlayerInput();
+	void makeMove(Move* move);
 	void undoMove();
 	bool isWhitesTurn() const;
-	bool isGameOver() const { return gameOver; }
+	bool isGameOver();
 	bool didWhiteWin() const { return !whitePlayerTurn; }
 
 private:
 	Board board;
 	std::stack<Move> moves;
-	Square* getSquareUnderMouse(Vector2);
+	IBot* bot;
 	int squareWidth;
 	Piece* selectedPiece;
 	Square* selectedSquare;
 	bool isDragging;
 	bool whitePlayerTurn;
-	bool gameOver;
 	bool isPlaying;
+
+	void movePiece(Square* from, Square* to);
+	Square* getSquareUnderMouse(Vector2);
 	bool isPlayerPiece(Piece*) const;
 	void highlightLegalMoves();
 	void unhighlightSquares();
-	void checkIfGameOver();
 	void generatePieces();
 };
+

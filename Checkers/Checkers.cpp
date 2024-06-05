@@ -1,16 +1,17 @@
 #include "raylib.h"
-#include <string>
-#include <sstream>
-
 #include "Game.h"
+#include "RandomBot.h"
+#include "SmartBot.h"
 
 int main(void)
 {
+    RandomBot bot;
+    SmartBot smartBot;
     int squareWidth = 100;
-    InitWindow(squareWidth * 8, squareWidth * 8, "Checkers!");
-    //SetTargetFPS();
+    Game game(squareWidth, &smartBot);
 
-    Game game(squareWidth);
+    InitWindow(squareWidth * 8, squareWidth * 8, "Checkers!");
+    //SetTargetFPS(60);   
 
     while (!WindowShouldClose())
     {

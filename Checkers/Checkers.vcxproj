@@ -137,12 +137,17 @@
     <ClCompile Include="Checkers.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="RandomBot.cpp" />
+    <ClCompile Include="SmartBot.cpp" />
     <ClCompile Include="Square.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="IBot.h" />
     <ClInclude Include="Piece.h" />
+    <ClInclude Include="RandomBot.h" />
+    <ClInclude Include="SmartBot.h" />
     <ClInclude Include="Square.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>

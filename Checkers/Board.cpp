@@ -37,7 +37,7 @@ void Board::draw()
 	{
 		for (int col = 0; col < 8; col++)
 		{
-			squares[row][col].draw(IVector2{ row * squareWidth, col * squareWidth }, squareWidth);
+			squares[row][col].draw(Vector2Int{ row * squareWidth, col * squareWidth }, squareWidth);
 		}
 	}
 
@@ -49,14 +49,14 @@ void Board::draw()
 			Piece* piece = squares[row][col].getPiece();
 			if (piece != nullptr)
 			{
-				IVector2 location = { row * squareWidth + squareWidth / 2, col * squareWidth + squareWidth / 2 };
-				piece->draw(location, squareWidth * 0.4, piece->isWhite() ? WHITE : BLACK);
+				Vector2Int location = { row * squareWidth + squareWidth / 2, col * squareWidth + squareWidth / 2 };
+				piece->draw(location, (float) (squareWidth * 0.4), piece->isWhite() ? WHITE : BLACK);
 			}
 		}
 	}
 }
 
-IVector2 Board::getSquareLocation(Square* square)
+Vector2Int Board::getSquareLocation(Square* square)
 {
 	for (int row = 0; row < 8; row++)
 	{
@@ -64,14 +64,14 @@ IVector2 Board::getSquareLocation(Square* square)
 		{
 			if (&squares[row][col] == square)
 			{
-				return IVector2{ row, col };
+				return Vector2Int{ row, col };
 			}
 		}
 	}
-	return IVector2{ -1, -1 };
+	return Vector2Int{ -1, -1 };
 }
 
-IVector2 Board::getPieceLocaiton(Piece* piece)
+Vector2Int Board::getPieceLocaiton(Piece* piece)
 {
 	for (int row = 0; row < 8; row++)
 	{
@@ -79,11 +79,11 @@ IVector2 Board::getPieceLocaiton(Piece* piece)
 		{
 			if (squares[row][col].getPiece() == piece)
 			{
-				return IVector2{ row, col };
+				return Vector2Int{ row, col };
 			}
 		}
 	}
-	return IVector2{ -1, -1 };
+	return Vector2Int{ -1, -1 };
 }
 
 std::vector<Piece*> Board::getPieces()

@@ -7,7 +7,7 @@ Piece::Piece(bool isWhite)
 	isBeingDragged = false;
 }
 
-void Piece::draw(IVector2 position, float radius, Color color) const {
+void Piece::draw(Vector2Int position, float radius, Color color) const {
     if (king)
     {
         DrawCircle(position.x, position.y, radius, GOLD);

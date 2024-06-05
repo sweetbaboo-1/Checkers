@@ -14,8 +14,8 @@ public:
 	void draw();
 	Square* getSquareAt(int row, int col);
 	Square(*getSquares())[8] { return &squares[0]; }
-	IVector2 getSquareLocation(Square* square);
-	IVector2 getPieceLocaiton(Piece* piece);
+	Vector2Int getSquareLocation(Square* square);
+	Vector2Int getPieceLocaiton(Piece* piece);
 	std::vector<Piece*> getPieces();
 
 private:
