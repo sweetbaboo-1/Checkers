@@ -40,7 +40,7 @@
       <Filter>Source Files\bots</Filter>
     </ClCompile>
     <ClCompile Include="SmartBot.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\bots</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

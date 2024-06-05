@@ -2,6 +2,7 @@
 #include "Board.h"
 #include "Utils.h"
 #include "IBot.h"
+#include <iostream>
 #include <stack>
 
 class IBot;
@@ -31,33 +32,38 @@ public:
 	Game(int squareWidth, IBot* bot);
 	~Game() = default;
 
-	void draw();
+	bool isPlaying;
+
 	void update();
-	Board* getBoard();
 	std::vector<Move> getLegalMoves(std::vector<Piece*> pieces, bool forceReturnCaptureMoves);
 	void handlePlayerInput();
 	void makeMove(Move* move);
 	void undoMove();
-	bool isWhitesTurn() const;
-	bool isGameOver();
+	void checkIfGameOver();
+
+	Board* getBoard() { return board; }
+	void draw() { board->draw(); }
+	bool isGameOver() const { return gameOver; }
+	bool isWhitesTurn() const { return whitePlayerTurn; }
 	bool didWhiteWin() const { return !whitePlayerTurn; }
 
 private:
-	Board board;
-	std::stack<Move> moves;
+	Board* board;
 	IBot* bot;
-	int squareWidth;
 	Piece* selectedPiece;
 	Square* selectedSquare;
+	std::stack<Move> moves;
+	int squareWidth;
 	bool isDragging;
 	bool whitePlayerTurn;
-	bool isPlaying;
+	bool gameOver;
 
 	void movePiece(Square* from, Square* to);
 	Square* getSquareUnderMouse(Vector2);
-	bool isPlayerPiece(Piece*) const;
 	void highlightLegalMoves();
 	void unhighlightSquares();
 	void generatePieces();
+
+	bool isPlayerPiece(Piece* piece) const { return piece->isWhite() == isWhitesTurn(); }
 };
 

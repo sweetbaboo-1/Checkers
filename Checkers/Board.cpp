@@ -1,10 +1,5 @@
 #include "Board.h"
 
-Board::Board()
-{
-	this->squareWidth = 0;
-}
-
 Board::Board(int width)
 {
 	this->squareWidth = width;
@@ -13,15 +8,15 @@ Board::Board(int width)
 
 void Board::generateSquares()
 {
-	float isWhite = -1;
+	bool isWhite = true;
 	for (int row = 0; row < 8; row++)
 	{
 		for (int col = 0; col < 8; col++)
 		{
-			squares[row][col] = Square(nullptr, isWhite == -1 ? BROWN : DARKBROWN);
-			isWhite = -isWhite;
+			squares[row][col] = Square(nullptr, isWhite ? BROWN : DARKBROWN);
+			isWhite = !isWhite;
 		}
-		isWhite = -isWhite;
+		isWhite = !isWhite;
 	}
 }
 
@@ -32,25 +27,16 @@ Square* Board::getSquareAt(int row, int col)
 
 void Board::draw() 
 {
-
 	for (int row = 0; row < 8; row++)
 	{
 		for (int col = 0; col < 8; col++)
 		{
 			squares[row][col].draw(Vector2Int{ row * squareWidth, col * squareWidth }, squareWidth);
-		}
-	}
-
-	// this loop seems redundant, but is to ensure that the pieces are drawn on top of the squares
-	for (int row = 0; row < 8; row++)
-	{
-		for (int col = 0; col < 8; col++)
-		{
 			Piece* piece = squares[row][col].getPiece();
 			if (piece != nullptr)
 			{
 				Vector2Int location = { row * squareWidth + squareWidth / 2, col * squareWidth + squareWidth / 2 };
-				piece->draw(location, (float) (squareWidth * 0.4), piece->isWhite() ? WHITE : BLACK);
+				piece->draw(location, (float)(squareWidth * 0.4), piece->isWhite() ? WHITE : BLACK);
 			}
 		}
 	}
@@ -71,7 +57,7 @@ Vector2Int Board::getSquareLocation(Square* square)
 	return Vector2Int{ -1, -1 };
 }
 
-Vector2Int Board::getPieceLocaiton(Piece* piece)
+Vector2Int Board::getPieceLocation(Piece* piece)
 {
 	for (int row = 0; row < 8; row++)
 	{

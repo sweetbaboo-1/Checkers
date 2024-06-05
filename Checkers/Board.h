@@ -7,7 +7,6 @@
 class Board
 {
 public:
-	Board(); // added due to issue in game constructor
 	Board(int squareWidth);
 	~Board() = default;
 
@@ -15,7 +14,7 @@ public:
 	Square* getSquareAt(int row, int col);
 	Square(*getSquares())[8] { return &squares[0]; }
 	Vector2Int getSquareLocation(Square* square);
-	Vector2Int getPieceLocaiton(Piece* piece);
+	Vector2Int getPieceLocation(Piece* piece);
 	std::vector<Piece*> getPieces();
 
 private:

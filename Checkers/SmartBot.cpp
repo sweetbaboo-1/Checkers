@@ -48,6 +48,7 @@ int SmartBot::evaluate()
 
 int SmartBot::minimax(int depth, int alpha, int beta, bool isMaximizingPlayer)
 {
+	game->checkIfGameOver();
 	if (depth == 0 || game->isGameOver())
 	{
 		return evaluate();

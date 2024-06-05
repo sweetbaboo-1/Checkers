@@ -7,13 +7,13 @@ int main(void)
 {
     RandomBot bot;
     SmartBot smartBot;
-    int squareWidth = 100;
+    int squareWidth = 100; // this breaks the hit detection
     Game game(squareWidth, &smartBot);
 
     InitWindow(squareWidth * 8, squareWidth * 8, "Checkers!");
     //SetTargetFPS(60);   
 
-    while (!WindowShouldClose())
+    while (!WindowShouldClose() && game.isPlaying)
     {
         BeginDrawing();
         ClearBackground(RAYWHITE);
