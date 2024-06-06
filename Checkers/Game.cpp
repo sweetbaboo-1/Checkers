@@ -192,11 +192,11 @@ void Game::makeMove(Move* move)
 				if (possibleNextMoves.size() > 0)
 				{
 					legalMove.multiCapture = true;
-					moves.push(legalMove);
+					moves.push(std::move(legalMove));
 					return;
 				}
 			}
-			moves.push(legalMove);
+			moves.push(std::move(legalMove));
 			whitePlayerTurn = !whitePlayerTurn;
 			return;
 		}
@@ -208,7 +208,7 @@ void Game::undoMove()
 	if (moves.size() == 0)
 		return;
 
-	Move lastMove = moves.top();
+	Move lastMove = std::move(moves.top());
 	moves.pop();
 	if (lastMove.capturedSquare != nullptr)
 	{
@@ -308,13 +308,3 @@ void Game::generatePieces()
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-

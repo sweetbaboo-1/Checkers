@@ -4,39 +4,31 @@ Move* SmartBot::think(Game* game)
 {
 	this->game = game;
 	this->board = game->getBoard();
-	amWhite = game->isWhitesTurn();
 
 	auto moves = game->getLegalMoves(game->getBoard()->getPieces(), false);
 	Move* bestMove = nullptr;
 	int bestValue = -10000;
 	int alpha = -10000;
 	int beta = 10000;
-	int depth = 8; 
+	int depth = 8;
 	int value;
 
 	for (auto& move : moves)
 	{
-		auto copiedMove = new Move(move); 
-		game->makeMove(copiedMove);
+		auto copiedMove = std::make_unique<Move>(move);
+		game->makeMove(copiedMove.get());
 		value = minimax(depth - 1, alpha, beta, false);
 		game->undoMove();
 		if (value > bestValue)
 		{
 			bestValue = value;
-			if (bestMove != nullptr)
-			{
-				delete bestMove; 
-			}
-			bestMove = copiedMove; 
-		}
-		else
-		{
-			delete copiedMove; 
+			bestMove = copiedMove.release();
 		}
 	}
-	std::cerr << "Best move value: " << bestValue << std::endl; 
+	std::cerr << "Best move value: " << bestValue << std::endl;
 	return bestMove;
 }
+
 
 
 int SmartBot::evaluate()
