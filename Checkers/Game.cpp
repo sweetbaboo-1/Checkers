@@ -63,11 +63,10 @@ std::vector<Move> Game::getLegalMoves(const std::vector<Piece*>& pieces, bool fo
 			if (isInBounds(movePos))
 			{
 				Square* moveSquare = board->getSquareAt(movePos.x, movePos.y);
-				if (moveSquare->getPiece() == nullptr) // empty square
-				{
+				if (moveSquare->getPiece() == nullptr)
 					legalMoves.push_back(Move{ piecePos, movePos, piece, nullptr, nullptr, false, false });
-				}
-				else if (moveSquare->getPiece()->isWhite() != piece->isWhite()) // enemy piece
+				
+				else if (moveSquare->getPiece()->isWhite() != piece->isWhite())
 				{
 					Vector2Int capturePos = { movePos.x + directions[i].x, movePos.y + directions[i].y };
 					if (isInBounds(capturePos))
@@ -145,8 +144,8 @@ void Game::handlePlayerInput()
 
 			Move move = { fromSquareLocation, toSquareLocation, selectedPiece };
 			makeMove(&move);
-			selectedPiece = nullptr;
 			selectedSquare->setHighlight(false);
+			selectedPiece = nullptr;
 			selectedSquare = nullptr;
 		}
 		else

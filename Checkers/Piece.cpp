@@ -15,11 +15,11 @@ void Piece::draw(Vector2Int position, float radius, Color color) const {
     if (isBeingDragged)
     {
         Color c = Color{ color.r, color.b, color.g, static_cast<unsigned char>(color.a / 2) };
-        DrawCircle(position.x, position.y, king ? radius * 0.9 : radius, c);
+        DrawCircle(position.x, position.y, king ? radius * 0.9f : radius, c);
     }
     else
     {
-        DrawCircle(position.x, position.y, king ? radius * 0.9 : radius, color);
+        DrawCircle(position.x, position.y, king ? radius * 0.9f : radius, color);
     }
 }
 

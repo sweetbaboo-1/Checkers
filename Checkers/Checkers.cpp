@@ -23,7 +23,6 @@ int main(void)
         
         EndDrawing();
     }
-    std::cin.get();
     CloseWindow();
     
     return 0;
