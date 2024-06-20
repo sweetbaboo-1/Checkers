@@ -35,7 +35,7 @@ public:
 	bool isPlaying;
 
 	void update();
-	std::vector<Move> getLegalMoves(std::vector<Piece*> pieces, bool forceReturnCaptureMoves);
+	std::vector<Move> getLegalMoves(const std::vector<Piece*>& pieces, bool forceReturnCaptureMoves);
 	void handlePlayerInput();
 	void makeMove(Move* move);
 	void undoMove();

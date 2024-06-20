@@ -27,7 +27,7 @@ void Game::update()
 	}
 }
 
-std::vector<Move> Game::getLegalMoves(std::vector<Piece*> pieces, bool forceReturnCaptureMoves = false)
+std::vector<Move> Game::getLegalMoves(const std::vector<Piece*>& pieces, bool forceReturnCaptureMoves = false)
 {
 	std::vector<Move> legalMoves;
 	std::vector<Move> captureMoves;
@@ -165,7 +165,7 @@ void Game::makeMove(Move* move)
 		return;
 
 	// todo only check legal moves for the piece that is being moved.
-	for (auto& legalMove : getLegalMoves({ move->piece }))
+	for (auto& legalMove : getLegalMoves(board->getPieces())) // need to check all legal moves because otherwise we don't know if there are capture moves
 	{
 		// Need to use legalMove here because the move that was passed is just where we dropped the piece
 		if (*move == legalMove) {

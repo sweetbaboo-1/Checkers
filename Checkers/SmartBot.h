@@ -13,9 +13,8 @@ private:
 	Board* board;
 	bool amWhite;
 	int evaluate();
-	int minimax(int depth, int alpha, int beta, bool isMaximizingPlayer);
+	int minimax(int depth, int alpha, int beta);
 	int EvaluateSide(bool isWhite);
 	int moveCount = 0;
-
 };
 

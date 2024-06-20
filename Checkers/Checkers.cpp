@@ -7,7 +7,7 @@ int main(void)
 {
     RandomBot bot;
     SmartBot smartBot;
-    int squareWidth = 50; // if the window size becomes larger than the screen it breaks hit detection
+    int squareWidth = 100; // if the window size becomes larger than the screen it breaks hit detection
     Game game(squareWidth, &smartBot);
 
     InitWindow(squareWidth * 8, squareWidth * 8, "Checkers!");
