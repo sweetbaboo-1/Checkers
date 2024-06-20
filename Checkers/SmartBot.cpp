@@ -11,6 +11,7 @@ Move* SmartBot::think(Game* game)
 	int beta = 10000;
 	int depth = 7;
 	int value;
+	moveCount = 0;
 
 	for (auto& move : moves)
 	{
